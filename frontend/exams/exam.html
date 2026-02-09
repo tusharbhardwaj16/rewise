@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exam – ReWise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/exam.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">ReWise</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/frontend/exams/exam.html#sbi-po">Exams</a>
+        <a href="#">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Exam Header -->
+    <section class="exam-header">
+      <h1 id="exam-name"></h1>
+      <p id="exam-context"></p>
+      <div class="exam-meta">
+        <span id="exam-status"></span>
+        <span id="exam-next-phase"></span>
+      </div>
+    </section>
+
+    <!-- Availability -->
+    <section class="exam-availability-section">
+      <h2>Available on ReWise for this exam</h2>
+      <ul id="exam-availability"></ul>
+    </section>
+
+    <!-- Subjects -->
+    <section class="exam-subjects">
+      <div id="subjects-container"></div>
+    </section>
+
+  </main>
+
+  <!-- Razorpay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Exam JS -->
+  <script src="/frontend/js/exam.js"></script>
+
+</body>
+</html>

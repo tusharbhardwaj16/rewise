@@ -10,7 +10,7 @@ const razorpay = new Razorpay({
 
 router.post("/create-order", async (req, res) => {
   const { productId } = req.body;
-
+console.log("REQ BODY:", req.body);
   if (!productId) {
     return res.status(400).json({ error: "productId required" });
   }

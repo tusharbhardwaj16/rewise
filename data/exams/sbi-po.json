@@ -1,0 +1,126 @@
+{
+  "exam": {
+    "id": "sbi-po",
+    "name": "SBI PO",
+    "short_context": "Practice and revision material for SBI Probationary Officer examination.",
+    "status": "upcoming",
+    "next_phase": {
+      "label": "Prelims",
+      "date": "2026-03-02"
+    }
+  },
+  "availability": {
+    "practice_sets": true,
+    "notes": true,
+    "mock_sets": true
+  },
+  "subjects": [
+    {
+      "id": "english",
+      "name": "English Language",
+      "products": [
+        {
+          "id": "sbi-po-pre-english-100q",
+          "name": "English Practice Set – Prelims (100 Questions)",
+          "description": "Reading comprehension, grammar and vocabulary",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        },
+        {
+          "id": "sbi-po-mains-english-notes",
+          "name": "English Revision Notes – Mains",
+          "description": "Descriptive writing and advanced comprehension",
+          "type": "notes",
+          "question_count": 0,
+          "price": 39,
+          "currency": "INR",
+          "delivery": "view",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "quant",
+      "name": "Quantitative Aptitude",
+      "products": [
+        {
+          "id": "sbi-po-pre-quant-100q",
+          "name": "Quant Practice Set – Prelims (100 Questions)",
+          "description": "Arithmetic and number-based questions",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "reasoning",
+      "name": "Reasoning Ability",
+      "products": [
+        {
+          "id": "sbi-po-pre-reasoning-100q",
+          "name": "Reasoning Practice Set – Prelims (100 Questions)",
+          "description": "Puzzles, seating arrangement and logical reasoning",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        },
+        {
+          "id": "sbi-po-mains-reasoning-computer",
+          "name": "Reasoning & Computer Aptitude – Mains Practice",
+          "description": "High-level reasoning with computer aptitude",
+          "type": "practice",
+          "question_count": 60,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "data-analysis",
+      "name": "Data Analysis & Interpretation",
+      "products": [
+        {
+          "id": "sbi-po-mains-dai-60q",
+          "name": "Data Analysis Practice – Mains (60 Questions)",
+          "description": "Caselets, charts and data interpretation",
+          "type": "practice",
+          "question_count": 60,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "banking-ga",
+      "name": "Banking & General Awareness",
+      "products": [
+        {
+          "id": "sbi-po-mains-ga-notes",
+          "name": "Banking & General Awareness Notes – Mains",
+          "description": "Banking concepts, current affairs and static GK",
+          "type": "notes",
+          "question_count": 0,
+          "price": 39,
+          "currency": "INR",
+          "delivery": "view",
+          "active": true
+        }
+      ]
+    }
+  ]
+}

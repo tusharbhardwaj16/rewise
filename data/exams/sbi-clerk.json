@@ -1,0 +1,109 @@
+{
+  "exam": {
+    "id": "sbi-clerk",
+    "name": "SBI Clerk",
+    "short_context": "Practice and revision material for SBI Clerk examination.",
+    "status": "upcoming",
+    "next_phase": {
+      "label": "Prelims",
+      "date": "2026-02-15"
+    }
+  },
+  "availability": {
+    "practice_sets": true,
+    "notes": true,
+    "mock_sets": true
+  },
+  "subjects": [
+    {
+      "id": "english",
+      "name": "English Language",
+      "products": [
+        {
+          "id": "sbi-clerk-pre-english-100q",
+          "name": "English Practice Set – Prelims (100 Questions)",
+          "description": "Reading comprehension, grammar and vocabulary",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        },
+        {
+          "id": "sbi-clerk-mains-english-notes",
+          "name": "English Revision Notes – Mains",
+          "description": "Comprehension and descriptive basics",
+          "type": "notes",
+          "question_count": 0,
+          "price": 39,
+          "currency": "INR",
+          "delivery": "view",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "quant",
+      "name": "Quantitative Aptitude",
+      "products": [
+        {
+          "id": "sbi-clerk-pre-quant-100q",
+          "name": "Quant Practice Set – Prelims (100 Questions)",
+          "description": "Arithmetic-focused questions",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "reasoning",
+      "name": "Reasoning Ability",
+      "products": [
+        {
+          "id": "sbi-clerk-pre-reasoning-100q",
+          "name": "Reasoning Practice Set – Prelims (100 Questions)",
+          "description": "Seating arrangement, puzzles and logic",
+          "type": "practice",
+          "question_count": 100,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        },
+        {
+          "id": "sbi-clerk-mains-reasoning-computer",
+          "name": "Reasoning & Computer Aptitude – Mains Practice",
+          "description": "Moderate-level reasoning with computer aptitude",
+          "type": "practice",
+          "question_count": 50,
+          "price": 59,
+          "currency": "INR",
+          "delivery": "download",
+          "active": true
+        }
+      ]
+    },
+    {
+      "id": "banking-ga",
+      "name": "Banking & General Awareness",
+      "products": [
+        {
+          "id": "sbi-clerk-mains-ga-notes",
+          "name": "Banking & General Awareness Notes – Mains",
+          "description": "Banking awareness, current affairs and static GK",
+          "type": "notes",
+          "question_count": 0,
+          "price": 39,
+          "currency": "INR",
+          "delivery": "view",
+          "active": true
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,14 @@ const db = require("./db");
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
 app.use("/products", require("./routes/products"));
