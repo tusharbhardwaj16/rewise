@@ -26,7 +26,7 @@ app.post("/api/create-order", async (req, res) => {
       order_id: order.id,
       amount: order.amount,
       currency: order.currency,
-      key: "rzp_test_xxxxxxxxxx"
+      key: "rzp_test_SDLsj1iUZuYEXP"
     });
   } catch (err) {
     res.status(500).json({ error: "Order creation failed" });
@@ -39,6 +39,6 @@ app.post("/api/verify-payment", (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(5000, () => {
-  console.log("Backend running on http://localhost:5000");
+app.listen(3000, () => {
+  console.log("Backend running on http://localhost:3000");
 });
