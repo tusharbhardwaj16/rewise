@@ -178,12 +178,12 @@ async function verifyPayment(response, productId, btn) {
 
   const data = await res.json();
 
-  if (!data.success || !data.token) {
+  if (!data.success || !data.downloadToken) {
     alert("Payment verified, but download failed");
     return;
   }
   window.location.href =
-    "http://localhost:4000/download?token=" + data.token;
+    "http://localhost:4000/download/" + data.downloadToken;
 
   btn.textContent = "Access";
   btn.disabled = false;

@@ -37,8 +37,6 @@ router.get("/:token", async (req, res) => {
       "files",
       row.file_key
     );
-	console.log("File Path is: ", filePath);
-	console.log("File Key is: ", row.file_key);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: "File not found" });
@@ -50,7 +48,6 @@ router.get("/:token", async (req, res) => {
       [token]
     );
 
-	console.log("FILE PATH:", filePath);
     res.download(filePath);
 
   } catch (err) {

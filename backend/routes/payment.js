@@ -1,27 +1,31 @@
 const express = require("express");
-const router = express.Router();
-
+const crypto = require("crypto");
+const Razorpay = require("razorpay");
 const db = require("../db");
 
-
-
-const Razorpay = require("razorpay");
+const router = express.Router();
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-router.post("/create-order", async (req, res) => {
-  const { productId } = req.body;
-console.log("REQ BODY:", req.body);
-  if (!productId) {
-    return res.status(400).json({ error: "productId required" });
-  }
+/* ================================
+   CREATE ORDER
+================================ */
 
+router.post("/create-order", async (req, res) => {
   try {
+    const { productId } = req.body;
+
+    if (!productId) {
+      return res.status(400).json({ error: "productId required" });
+    }
+
     const productResult = await db.query(
-      `SELECT id, price FROM products WHERE id = $1 AND active = true`,
+      `SELECT id, price
+       FROM products
+       WHERE id = $1 AND active = true`,
       [productId]
     );
 
@@ -31,91 +35,85 @@ console.log("REQ BODY:", req.body);
 
     const product = productResult.rows[0];
 
-    const order = await razorpay.orders.create({
+    const razorpayOrder = await razorpay.orders.create({
       amount: product.price * 100,
       currency: "INR",
       receipt: `receipt_${Date.now()}`
     });
 
     await db.query(
-      `INSERT INTO orders (razorpay_order_id, product_id, amount, payment_status)
+      `INSERT INTO orders
+       (razorpay_order_id, product_id, amount, payment_status)
        VALUES ($1, $2, $3, $4)`,
-      [order.id, product.id, product.price, "created"]
+      [
+        razorpayOrder.id,
+        product.id,
+        product.price,
+        "created"
+      ]
     );
 
-    res.json({
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency,
+    return res.json({
+      orderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
       key: process.env.RAZORPAY_KEY_ID
     });
 
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err);
-    res.status(500).json({ error: "Failed to create order" });
+    return res.status(500).json({ error: "Failed to create order" });
   }
 });
 
-
-const crypto = require("crypto");
-const { v4: uuidv4 } = require("uuid");
+/* ================================
+   VERIFY PAYMENT
+================================ */
 
 router.post("/verify", async (req, res) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature
-  } = req.body;
-
-
-  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-    return res.status(400).json({ error: "Invalid payload" });
-  }
-
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-    .digest("hex");
-
-  if (expectedSignature !== razorpay_signature) {
-    return res.status(400).json({ error: "Signature verification failed" });
-  }
-
   try {
-    // Mark order as paid
-    const orderResult = await db.query(
-  `UPDATE orders
-   SET payment_status = 'paid',
-       download_token = $1
-   WHERE razorpay_order_id = $2
-   RETURNING id`,
-  [token, razorpay_order_id]
-);
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    } = req.body;
 
-    if (orderResult.rows.length === 0) {
-      return res.status(404).json({ error: "Order not found" });
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ error: "Missing payment data" });
     }
 
-    const orderId = orderResult.rows[0].id;
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest("hex");
 
-    // Generate one-time token
-    const token = uuidv4();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({ error: "Invalid signature" });
+    }
 
-    await db.query(
-      `INSERT INTO download_tokens (token, order_id, expires_at)
-       VALUES ($1, $2, $3)`,
-      [token, orderId, expiresAt]
+    const downloadToken = crypto.randomBytes(32).toString("hex");
+
+    const updateResult = await db.query(
+      `UPDATE orders
+       SET payment_status = 'paid',
+           download_token = $1
+       WHERE razorpay_order_id = $2
+       RETURNING id`,
+      [downloadToken, razorpay_order_id]
     );
 
-    res.json({
-  	success: true,
- 	token
-	});
+    if (updateResult.rowCount === 0) {
+      return res.status(400).json({ error: "Order not found for verification" });
+    }
+
+    return res.json({
+      success: true,
+      downloadToken
+    });
 
   } catch (err) {
     console.error("VERIFY ERROR:", err);
-    res.status(500).json({ error: "Verification failed" });
+    return res.status(500).json({ error: "Verify failed" });
   }
 });
 
