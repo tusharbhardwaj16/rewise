@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
+
 const db = require("../db");
+
+
+
 const Razorpay = require("razorpay");
 
 const razorpay = new Razorpay({
@@ -63,6 +67,7 @@ router.post("/verify", async (req, res) => {
     razorpay_signature
   } = req.body;
 
+
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return res.status(400).json({ error: "Invalid payload" });
   }
@@ -79,12 +84,13 @@ router.post("/verify", async (req, res) => {
   try {
     // Mark order as paid
     const orderResult = await db.query(
-      `UPDATE orders
-       SET payment_status = 'paid'
-       WHERE razorpay_order_id = $1
-       RETURNING id`,
-      [razorpay_order_id]
-    );
+  `UPDATE orders
+   SET payment_status = 'paid',
+       download_token = $1
+   WHERE razorpay_order_id = $2
+   RETURNING id`,
+  [token, razorpay_order_id]
+);
 
     if (orderResult.rows.length === 0) {
       return res.status(404).json({ error: "Order not found" });
@@ -102,7 +108,10 @@ router.post("/verify", async (req, res) => {
       [token, orderId, expiresAt]
     );
 
-    res.json({ downloadToken: token });
+    res.json({
+  	success: true,
+ 	token
+	});
 
   } catch (err) {
     console.error("VERIFY ERROR:", err);

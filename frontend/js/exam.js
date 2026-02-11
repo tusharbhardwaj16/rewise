@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const examId = getExamIdFromUrl();
 
@@ -117,7 +118,7 @@ document.addEventListener("click", async (e) => {
   btn.textContent = "Processing…";
 
   try {
-    const order = await createOrder(productId, price);
+    const order = await createOrder(productId);
     openRazorpay(order, productId, btn);
   } catch {
     btn.disabled = false;
@@ -130,7 +131,7 @@ async function createOrder(productId) {
   const res = await fetch("http://localhost:4000/payment/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ productid: productId})
+    body: JSON.stringify({ productId: productId})
   });
   if (!res.ok) throw new Error();
   return res.json();
@@ -142,7 +143,7 @@ function openRazorpay(order, productId, btn) {
     key: order.key,
     amount: order.amount,
     currency: order.currency,
-    order_id: order.order_id,
+    order_id: order.orderId,
     name: "ReWise",
     handler: function (response) {
       verifyPayment(response, productId, btn);
@@ -159,7 +160,7 @@ function openRazorpay(order, productId, btn) {
 
 /* VERIFY */
 async function verifyPayment(response, productId, btn) {
-  const res = await fetch("http://localhost:4000/payment/verify-payment", {
+  const res = await fetch("http://localhost:4000/payment/verify", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -174,6 +175,15 @@ async function verifyPayment(response, productId, btn) {
     btn.textContent = "Buy";
     return;
   }
+
+  const data = await res.json();
+
+  if (!data.success || !data.token) {
+    alert("Payment verified, but download failed");
+    return;
+  }
+  window.location.href =
+    "http://localhost:4000/download?token=" + data.token;
 
   btn.textContent = "Access";
   btn.disabled = false;

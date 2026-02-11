@@ -1,5 +1,4 @@
 require("dotenv").config();
-console.log("RAZORPAY_KEY_ID:", process.env.RAZORPAY_KEY_ID);
 
 const db = require("./db");
 

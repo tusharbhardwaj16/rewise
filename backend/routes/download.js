@@ -9,11 +9,11 @@ router.get("/:token", async (req, res) => {
 
   try {
     const result = await db.query(
-      `SELECT dt.id, dt.expires_at, dt.used, p.file_key
-       FROM download_tokens dt
-       JOIN orders o ON o.id = dt.order_id
-       JOIN products p ON p.id = o.product_id
-       WHERE dt.token = $1`,
+      `SELECT p.file_key
+	FROM orders o
+	JOIN products p ON p.id = o.product_id
+	WHERE o.download_token = $1
+  	AND o.payment_status = 'paid'`,
       [token]
     );
 
@@ -37,6 +37,8 @@ router.get("/:token", async (req, res) => {
       "files",
       row.file_key
     );
+	console.log("File Path is: ", filePath);
+	console.log("File Key is: ", row.file_key);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: "File not found" });
@@ -48,6 +50,7 @@ router.get("/:token", async (req, res) => {
       [token]
     );
 
+	console.log("FILE PATH:", filePath);
     res.download(filePath);
 
   } catch (err) {
